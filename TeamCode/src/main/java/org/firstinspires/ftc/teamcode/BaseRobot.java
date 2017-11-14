@@ -35,4 +35,29 @@ public class BaseRobot extends OpMode {
     public void loop() {
 
     }
+
+
+    public void reset_lift_encoders() {
+        left_lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        right_lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        left_lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        right_lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+
+
+    public int get_left_lift_enc() {
+        if (left_lift.getMode() != DcMotor.RunMode.RUN_USING_ENCODER) {
+            left_lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        }
+        return left_lift.getCurrentPosition();
+    }
+
+    public int get_right_int_enc() {
+        if (right_lift.getMode() != DcMotor.RunMode.RUN_USING_ENCODER) {
+            right_lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        }
+        return right_lift.getCurrentPosition();
+    }
+
 }
