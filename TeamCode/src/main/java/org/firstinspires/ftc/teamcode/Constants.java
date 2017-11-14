@@ -6,4 +6,5 @@ package org.firstinspires.ftc.teamcode;
 
 public class Constants {
     public static final int K_TICKS_PER_REV_LIFT = 280;
+    public static final int K_LIFT_ERROR_P = 540;
 }
