@@ -11,12 +11,12 @@ import com.qualcomm.robotcore.util.Range;
  * Created by andrew on Oct 31, 2017 as part of ftc_app in org.firstinspires.ftc.teamcode.
  */
 
-class BaseRobot extends OpMode {
+public class BaseRobot extends OpMode {
 
-    DcMotor left_drive, right_drive, left_lift, right_lift, left_intake, right_intake;
-    ElapsedTime timer;
-    Servo jewel_servo;
-    ColorSensor jewel_color;
+    public DcMotor left_drive, right_drive, left_lift, right_lift, left_intake, right_intake;
+    public ElapsedTime timer = new ElapsedTime();
+    public Servo jewel_servo;
+    public ColorSensor jewel_color;
 
     @Override
     public void init() {
@@ -53,7 +53,7 @@ class BaseRobot extends OpMode {
     }
 
 
-    void reset_lift_encoders() {
+    public void reset_lift_encoders() {
         left_lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         right_lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
@@ -62,14 +62,14 @@ class BaseRobot extends OpMode {
     }
 
 
-    int get_left_lift_enc() {
+    public int get_left_lift_enc() {
         if (left_lift.getMode() != DcMotor.RunMode.RUN_USING_ENCODER) {
             left_lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
         return left_lift.getCurrentPosition();
     }
 
-    int get_right_int_enc() {
+    public int get_right_int_enc() {
         if (right_lift.getMode() != DcMotor.RunMode.RUN_USING_ENCODER) {
             right_lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
