@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.Range;
 
@@ -8,6 +9,7 @@ import com.qualcomm.robotcore.util.Range;
  */
 
 @TeleOp
+@Disabled
 public class LiftTest extends BaseRobot {
 
 
@@ -27,7 +29,7 @@ public class LiftTest extends BaseRobot {
         super.loop();
         double left_speed = 0;
         double right_speed = 0;
-        double error = get_left_lift_enc() - get_right_int_enc();
+        double error = get_left_lift_enc() - get_right_lift_enc();
         error /= Constants.K_LIFT_ERROR_P;
 
         if (gamepad1.dpad_up) {
@@ -46,6 +48,9 @@ public class LiftTest extends BaseRobot {
         right_speed = Range.clip(right_speed, -1, 1);
         left_lift.setPower(left_speed);
         right_lift.setPower(right_speed);
+
+        telemetry.addData("00 Left Lift Enc: ", get_left_lift_enc());
+        telemetry.addData("01 Right Lift Enc: ", get_right_lift_enc());
 
     }
 }
