@@ -51,7 +51,7 @@ import com.qualcomm.robotcore.util.Range;
  */
 
 @TeleOp(name="AndrewOp", group="Tests")
-// @Disabled
+@Disabled
 public class AndrewOp extends OpMode
 {
     // Declare OpMode members.

@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 /**
@@ -27,5 +28,10 @@ public class TestOp extends BaseRobot {
         arcade_drive(-gamepad1.left_stick_y, gamepad1.left_stick_x);
         telemetry.addData("00 Left Drive Enc: ", get_left_drive_enc());
         telemetry.addData("01 Right Drive Enc: ", get_right_drive_enc());
+        if (gamepad1.a) {
+            auto_turn(0.5, 90);
+        } else if (gamepad1.b) {
+            reset_drive_encoders();
+        }
     }
 }

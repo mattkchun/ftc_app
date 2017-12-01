@@ -23,4 +23,10 @@ public class Constants {
     public static final double K_PPDEG_DRIVE = K_PPTURN_DRIVE / 360; // pulses per degree
 
     public static final double K_DRIVE_ERROR_P = 200; // higher = less sensitive
+
+    public static final double K_LIFT_UP_SPD = 1;
+    public static final double K_LIFT_DOWN_SPD = -1;
+
+    public static final double K_INTAKE_SPD = -1;
+    public static final double K_OUTPUT_SPD = 1;
 }

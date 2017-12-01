@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 /**
@@ -7,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
  */
 
 @TeleOp
+@Disabled
 public class DannyColorTestOp extends BaseRobot {
     private static final double SERVO_DOWN = 0.7;
     private static final double SERVO_UP = 0.1;

@@ -26,7 +26,8 @@ public class BlueJewelAuto extends BaseRobot {
         super.loop();
         switch (stage) {
             case 0:
-                if (auto_drive(-0.3, 7))
+                if (auto_drive(-0.3, 4))
+                    reset_drive_encoders();
                     stage++;
                 set_jewel_servo(Constants.K_JEWEL_SERVO_DOWN);
                 break;
@@ -36,15 +37,18 @@ public class BlueJewelAuto extends BaseRobot {
                 break;
             case 2:
                 if (auto_turn(turnMult * 0.2, 20))
+                    reset_drive_encoders();
                     stage++;
                 break;
             case 3:
                 if (auto_turn(-turnMult * 0.2, 20))
+                    reset_drive_encoders();
                     stage++;
                 set_jewel_servo(Constants.K_JEWEL_SERVO_UP);
                 break;
             case 4:
                 if (auto_drive(0.5, 45))
+                    reset_drive_encoders();
                     stage++;
                 break;
             default:
