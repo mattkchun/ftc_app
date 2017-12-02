@@ -49,6 +49,8 @@ public class BaseRobot extends OpMode {
     public void loop() {
         telemetry.addData("D00 Left Drive Enc: ", get_left_drive_enc());
         telemetry.addData("D01 Right Drive Enc: ", get_right_drive_enc());
+        telemetry.addData("D02 Left Lift Enc: ", get_left_lift_enc());
+        telemetry.addData("D03 Right Lift Enc: ", get_right_lift_enc());
     }
 
     /**
@@ -90,6 +92,17 @@ public class BaseRobot extends OpMode {
 
         left_speed = Range.clip(left_speed, -1, 1);
         right_speed = Range.clip(right_speed, -1, 1);
+        if (get_left_lift_enc() >= Constants.K_LIFT_MAX) {
+            left_speed = Range.clip(left_speed, -1, 0);
+        } else if (get_left_lift_enc() <= Constants.K_LIFT_MIN) {
+            left_speed = Range.clip(left_speed, 0, 1);
+        }
+
+        if (get_right_lift_enc() >= Constants.K_LIFT_MAX) {
+            right_speed = Range.clip(right_speed, -1, 0);
+        } else if (get_right_lift_enc() <= Constants.K_LIFT_MIN) {
+            right_speed = Range.clip(right_speed, 0, 1);
+        }
         left_lift.setPower(left_speed);
         right_lift.setPower(right_speed);
     }
@@ -143,16 +156,25 @@ public class BaseRobot extends OpMode {
         double TARGET_ENC = Math.abs(Constants.K_PPDEG_DRIVE * degrees);
         telemetry.addData("D99 TURNING TO ENC: ", TARGET_ENC);
 
-        power = Range.clip(power, -1, 1);
-
-        left_drive.setPower(power);
-        right_drive.setPower(-power);
-
         if (Math.abs(get_left_drive_enc()) >= TARGET_ENC &&
                 Math.abs(get_right_drive_enc()) >= TARGET_ENC) {
             left_drive.setPower(0);
             right_drive.setPower(0);
             return true;
+        } else {
+            double left_speed = power;
+            double right_speed = power;
+            double error = get_left_drive_enc() + get_right_drive_enc();
+
+            error /= Constants.K_DRIVE_ERROR_P;
+            left_speed += error;
+            right_speed -= error;
+
+            left_speed = Range.clip(left_speed, -1, 1);
+            right_speed = Range.clip(right_speed, -1, 1);
+
+            left_drive.setPower(left_speed);
+            right_drive.setPower(right_speed);
         }
         return false;
     }

@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
  */
 
 @Autonomous
-public class BlueJewelAuto extends BaseRobot {
+public class RedJewelAuto extends BaseRobot {
     private int stage = 0;
     private int turnMult;
 
@@ -34,7 +34,7 @@ public class BlueJewelAuto extends BaseRobot {
                 set_jewel_servo(Constants.K_JEWEL_SERVO_DOWN);
                 break;
             case 1:
-                turnMult = get_turn_mult(false);
+                turnMult = get_turn_mult(true);
                 stage++;
                 break;
             case 2:
