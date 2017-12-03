@@ -10,7 +10,7 @@ public class Constants {
     public static final int K_LIFT_MIN = 0;
     public static final int K_LIFT_MAX = 3500;
 
-    public static final double K_JEWEL_SERVO_DOWN = 0.2;
+    public static final double K_JEWEL_SERVO_DOWN = 0.13;
     public static final double K_JEWEL_SERVO_UP = 0.9;
 
     public static final int K_PPR_DRIVE = 1120;

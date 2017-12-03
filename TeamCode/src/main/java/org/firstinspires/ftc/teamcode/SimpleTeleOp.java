@@ -23,7 +23,7 @@ public class SimpleTeleOp extends BaseRobot {
     public void loop() {
         super.loop();
         tank_drive(-gamepad1.left_stick_y, -gamepad1.right_stick_y);
-        drive_lift(gamepad1.dpad_up ? Constants.K_LIFT_UP_SPD : gamepad1.dpad_down ? Constants.K_LIFT_DOWN_SPD : 0);
+        drive_lift(gamepad1.right_trigger - gamepad1.left_trigger);
         drive_intake(gamepad1.right_bumper ? Constants.K_INTAKE_SPD : gamepad1.left_bumper ? Constants.K_OUTPUT_SPD : 0);
     }
 }

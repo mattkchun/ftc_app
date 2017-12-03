@@ -43,6 +43,7 @@ public class BaseRobot extends OpMode {
         reset_drive_encoders();
         reset_lift_encoders();
         set_jewel_servo(Constants.K_JEWEL_SERVO_UP);
+        jewel_color.enableLed(true);
     }
 
     @Override
@@ -51,6 +52,8 @@ public class BaseRobot extends OpMode {
         telemetry.addData("D01 Right Drive Enc: ", get_right_drive_enc());
         telemetry.addData("D02 Left Lift Enc: ", get_left_lift_enc());
         telemetry.addData("D03 Right Lift Enc: ", get_right_lift_enc());
+        telemetry.addData("D04 Color Red: ", jewel_color.red());
+        telemetry.addData("D05 Color Blue: ", jewel_color.blue());
     }
 
     /**
@@ -162,19 +165,19 @@ public class BaseRobot extends OpMode {
             right_drive.setPower(0);
             return true;
         } else {
-            double left_speed = power;
-            double right_speed = power;
-            double error = get_left_drive_enc() + get_right_drive_enc();
+//            double left_speed = power;
+//            double right_speed = power;
+//            double error = get_left_drive_enc() + get_right_drive_enc();
+//
+//            error /= Constants.K_DRIVE_ERROR_P;
+//            left_speed += error;
+//            right_speed -= error;
+//
+//            left_speed = Range.clip(left_speed, -1, 1);
+//            right_speed = Range.clip(right_speed, -1, 1);
 
-            error /= Constants.K_DRIVE_ERROR_P;
-            left_speed += error;
-            right_speed -= error;
-
-            left_speed = Range.clip(left_speed, -1, 1);
-            right_speed = Range.clip(right_speed, -1, 1);
-
-            left_drive.setPower(left_speed);
-            right_drive.setPower(right_speed);
+            left_drive.setPower(power);
+            right_drive.setPower(-power);
         }
         return false;
     }
@@ -225,15 +228,7 @@ public class BaseRobot extends OpMode {
     }
 
     public int get_turn_mult(boolean isRed) {
-        if (isRed && jewel_color.red() > jewel_color.blue()) {
-            return -1;
-        } else if (!isRed && jewel_color.red() > jewel_color.blue()) {
-            return 1;
-        } else if (isRed && jewel_color.blue() > jewel_color.red()) {
-            return 1;
-        } else {
-            return -1;
-        }
+        return (jewel_color.red() > jewel_color.blue() ? 1 : -1) * (isRed ? 1 : -1);
     }
 
 }

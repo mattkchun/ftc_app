@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 @Autonomous
 public class RedJewelAuto extends BaseRobot {
     private int stage = 0;
-    private int turnMult;
+    private int turnMult = 0;
 
     @Override
     public void init() {
@@ -27,7 +27,7 @@ public class RedJewelAuto extends BaseRobot {
         super.loop();
         switch (stage) {
             case 0:
-                if (auto_drive(-0.3, 2.5)) {
+                if (auto_drive(-0.3, 2.7)) {
                     reset_drive_encoders();
                     stage++;
                 }
@@ -38,26 +38,36 @@ public class RedJewelAuto extends BaseRobot {
                 stage++;
                 break;
             case 2:
-                if (auto_turn(turnMult * 0.2, 15)) {
+                if (auto_turn(turnMult * 0.6, 15)) {
                     reset_drive_encoders();
                     stage++;
                 }
                 break;
-            case 3:
-                if (auto_turn(-turnMult * 0.2, 15)) {
-                    reset_drive_encoders();
-                    stage++;
-                }
-                set_jewel_servo(Constants.K_JEWEL_SERVO_UP);
-                break;
-            case 4:
-                if (auto_drive(0.6, 3)) {
-                    reset_drive_encoders();
-                    stage++;
-                }
-                break;
+//            case 3:
+//                if (auto_drive(0.5, 15)) {
+//                    reset_drive_encoders();
+//                    stage++;
+//                }
+//                break;
+//            case 4:
+//                arcade_drive(0, 1);
+//                break;
+//            case 3:
+//                if (auto_turn(-turnMult * 0.2, 15)) {
+//                    reset_drive_encoders();
+//                    stage++;
+//                }
+//                set_jewel_servo(Constants.K_JEWEL_SERVO_UP);
+//                break;
+//            case 4:
+//                if (auto_drive(0.6, 3)) {
+//                    reset_drive_encoders();
+//                    stage++;
+//                }
+//                break;
             default:
                 break;
         }
+        telemetry.addData("TurnMult: ", turnMult);
     }
 }
