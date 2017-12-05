@@ -7,8 +7,10 @@ package org.firstinspires.ftc.teamcode;
 public class Constants {
     public static final int K_PPR_LIFT = 1120;
     public static final int K_LIFT_ERROR_P = 540;
+    public static final int K_LIFT_MIN = 0;
+    public static final int K_LIFT_MAX = 3500;
 
-    public static final double K_JEWEL_SERVO_DOWN = 0.2;
+    public static final double K_JEWEL_SERVO_DOWN = 0.13;
     public static final double K_JEWEL_SERVO_UP = 0.9;
 
     public static final int K_PPR_DRIVE = 1120;
@@ -23,4 +25,10 @@ public class Constants {
     public static final double K_PPDEG_DRIVE = K_PPTURN_DRIVE / 360; // pulses per degree
 
     public static final double K_DRIVE_ERROR_P = 200; // higher = less sensitive
+
+    public static final double K_LIFT_UP_SPD = 1;
+    public static final double K_LIFT_DOWN_SPD = -1;
+
+    public static final double K_INTAKE_SPD = -1;
+    public static final double K_OUTPUT_SPD = 1;
 }

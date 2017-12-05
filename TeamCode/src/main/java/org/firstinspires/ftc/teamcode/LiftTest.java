@@ -9,7 +9,6 @@ import com.qualcomm.robotcore.util.Range;
  */
 
 @TeleOp
-@Disabled
 public class LiftTest extends BaseRobot {
 
 

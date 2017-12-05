@@ -30,6 +30,7 @@ public class BaseRobot extends OpMode {
 
         left_drive.setDirection(DcMotor.Direction.REVERSE);
         left_lift.setDirection(DcMotorSimple.Direction.REVERSE);
+        right_intake.setDirection(DcMotorSimple.Direction.REVERSE);
 
         jewel_servo = hardwareMap.get(Servo.class, "jewel_servo");
         jewel_color = hardwareMap.get(ColorSensor.class, "jewel_color");
@@ -42,16 +43,22 @@ public class BaseRobot extends OpMode {
         reset_drive_encoders();
         reset_lift_encoders();
         set_jewel_servo(Constants.K_JEWEL_SERVO_UP);
+        jewel_color.enableLed(true);
     }
 
     @Override
     public void loop() {
-
+        telemetry.addData("D00 Left Drive Enc: ", get_left_drive_enc());
+        telemetry.addData("D01 Right Drive Enc: ", get_right_drive_enc());
+        telemetry.addData("D02 Left Lift Enc: ", get_left_lift_enc());
+        telemetry.addData("D03 Right Lift Enc: ", get_right_lift_enc());
+        telemetry.addData("D04 Color Red: ", jewel_color.red());
+        telemetry.addData("D05 Color Blue: ", jewel_color.blue());
     }
 
     /**
      * @param power: The speed to drive at. Positive for forward.
-     * @param turn: The speed to turn at. Positive for right.
+     * @param turn:  The speed to turn at. Positive for right.
      */
     public void arcade_drive(double power, double turn) {
         double leftPower = Range.clip(power + turn, -1.0, 1.0);
@@ -61,6 +68,22 @@ public class BaseRobot extends OpMode {
         right_drive.setPower(rightPower);
     }
 
+    /**
+     * @param leftPwr:  The speed for the left motor to turn at. Positive for forward.
+     * @param rightPwr: The speed for the right motor to turn at. Positive for forward.
+     */
+    public void tank_drive(double leftPwr, double rightPwr) {
+        double leftPower = Range.clip(leftPwr, -1.0, 1.0);
+        double rightPower = Range.clip(rightPwr, -1.0, 1.0);
+
+        left_drive.setPower(leftPower);
+        right_drive.setPower(rightPower);
+    }
+
+    /**
+     * @param power: The speed to drive the lift at. Positive for up.
+     *               TODO: check encoder max/min values for overshoot handling
+     */
     public void drive_lift(double power) {
         double left_speed = power;
         double right_speed = power;
@@ -72,8 +95,29 @@ public class BaseRobot extends OpMode {
 
         left_speed = Range.clip(left_speed, -1, 1);
         right_speed = Range.clip(right_speed, -1, 1);
+        if (get_left_lift_enc() >= Constants.K_LIFT_MAX) {
+            left_speed = Range.clip(left_speed, -1, 0);
+        } else if (get_left_lift_enc() <= Constants.K_LIFT_MIN) {
+            left_speed = Range.clip(left_speed, 0, 1);
+        }
+
+        if (get_right_lift_enc() >= Constants.K_LIFT_MAX) {
+            right_speed = Range.clip(right_speed, -1, 0);
+        } else if (get_right_lift_enc() <= Constants.K_LIFT_MIN) {
+            right_speed = Range.clip(right_speed, 0, 1);
+        }
         left_lift.setPower(left_speed);
         right_lift.setPower(right_speed);
+    }
+
+    /**
+     * @param power: The speed to drive the intake at. Positive for output.
+     */
+    public void drive_intake(double power) {
+        power = Range.clip(power, -1, 1);
+
+        left_intake.setPower(power);
+        right_intake.setPower(power);
     }
 
     public void set_jewel_servo(double pos) {
@@ -112,18 +156,28 @@ public class BaseRobot extends OpMode {
      * @return Whether the target angle has been reached.
      */
     public boolean auto_turn(double power, double degrees) {
-        double TARGET_ENC = Constants.K_PPDEG_DRIVE * degrees;
-
-        power = Range.clip(power, -1, 1);
-
-        left_drive.setPower(power);
-        right_drive.setPower(-power);
+        double TARGET_ENC = Math.abs(Constants.K_PPDEG_DRIVE * degrees);
+        telemetry.addData("D99 TURNING TO ENC: ", TARGET_ENC);
 
         if (Math.abs(get_left_drive_enc()) >= TARGET_ENC &&
                 Math.abs(get_right_drive_enc()) >= TARGET_ENC) {
             left_drive.setPower(0);
             right_drive.setPower(0);
             return true;
+        } else {
+//            double left_speed = power;
+//            double right_speed = power;
+//            double error = get_left_drive_enc() + get_right_drive_enc();
+//
+//            error /= Constants.K_DRIVE_ERROR_P;
+//            left_speed += error;
+//            right_speed -= error;
+//
+//            left_speed = Range.clip(left_speed, -1, 1);
+//            right_speed = Range.clip(right_speed, -1, 1);
+
+            left_drive.setPower(power);
+            right_drive.setPower(-power);
         }
         return false;
     }
@@ -174,15 +228,7 @@ public class BaseRobot extends OpMode {
     }
 
     public int get_turn_mult(boolean isRed) {
-        if (isRed && jewel_color.red() > jewel_color.blue()) {
-            return -1;
-        } else if (!isRed && jewel_color.red() > jewel_color.blue()) {
-            return 1;
-        } else if (isRed && jewel_color.blue() > jewel_color.red()) {
-            return 1;
-        } else {
-            return -1;
-        }
+        return (jewel_color.red() > jewel_color.blue() ? 1 : -1) * (isRed ? 1 : -1);
     }
 
 }
